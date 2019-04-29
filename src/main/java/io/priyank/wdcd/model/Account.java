@@ -1,13 +1,14 @@
 package io.priyank.wdcd.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "account")
-public class Account {
+public class Account extends ResourceSupport {
 
     @Id
     @Column(name = "account_number")
