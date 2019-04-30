@@ -31,6 +31,20 @@ public class Account extends ResourceSupport {
     @Column(name = "opening_balance")
     private double openingBalance;
 
+    public Account(Integer accountNumber,
+                   AccountType accountType,
+                   LocalDateTime balanceDate,
+                   String currency,
+                   String accountName,
+                   double openingBalance) {
+        this.accountName = accountName;
+        this.accountNumber = accountNumber;
+        this.accountType = accountType;
+        this.balanceDate = balanceDate;
+        this.currency = currency;
+        this.openingBalance = openingBalance;
+    }
+
     public Integer getAccountNumber() {
         return accountNumber;
     }

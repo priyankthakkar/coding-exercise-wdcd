@@ -38,6 +38,24 @@ public class Transaction extends ResourceSupport {
     @Column(name = "transaction_narrative")
     private String transactionNarrative;
 
+    public Transaction(Integer identifier,
+                       Account account,
+                       LocalDateTime valueDate,
+                       String currency,
+                       Double debitAmount,
+                       Double creditAmount,
+                       TransactionType transactionType,
+                       String transactionNarrative) {
+        this.identifier = identifier;
+        this.account = account;
+        this.valueDate = valueDate;
+        this.currency = currency;
+        this.debitAmount = debitAmount;
+        this.creditAmount = creditAmount;
+        this.transactionType = transactionType;
+        this.transactionNarrative = transactionNarrative;
+    }
+
     public Integer getIdentifier() {
         return identifier;
     }
