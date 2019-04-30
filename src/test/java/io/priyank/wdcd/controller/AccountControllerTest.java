@@ -1,18 +1,19 @@
-package io.priyank.wdcd.service;
+package io.priyank.wdcd.controller;
 
 import io.priyank.wdcd.model.Account;
 import io.priyank.wdcd.model.AccountType;
-import io.priyank.wdcd.repository.AccountRepository;
+import io.priyank.wdcd.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.Resources;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,20 +21,22 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-public class AccountServiceMockTest {
+public class AccountControllerTest {
 
-    @MockBean
-    private AccountRepository accountRepository;
-
-    @Autowired
+    @Mock
     private AccountService accountService;
 
+    @InjectMocks
+    private AccountController accountController;
+
     @BeforeEach
-    public void setMockOutput() {
+    public void setUp(){
+        MockitoAnnotations.initMocks(this);
         List<Account> accounts = Stream.of(new Account(259359299,
                         AccountType.CURRENT,
                         LocalDateTime.now(),
@@ -49,19 +52,17 @@ public class AccountServiceMockTest {
                 .collect(Collectors.toList());
 
         Page<Account> accountPage = new PageImpl<>(accounts);
-        when(this.accountRepository.findAll(any(Pageable.class))).thenReturn(accountPage);
+        when(this.accountService.getAccounts(any(Pageable.class))).thenReturn(accountPage);
     }
 
-    @DisplayName("Test getAccounts(Pageable pageable)")
+    @DisplayName("Test AccountController::getAccounts(pageNumber, size)")
     @Test
     public void test_getAccounts() {
-        Page<Account> accountPage = this.accountService.getAccounts(PageRequest.of(0, 1));
-        assertNotNull(accountPage);
-        assertFalse(accountPage.hasNext());
-        assertFalse(accountPage.hasPrevious());
-        assertTrue(accountPage.hasContent());
-        assertEquals(2, accountPage.getContent().size());
-        Account account = accountPage.getContent().stream().findFirst().get();
+        Resources<Account> accountResources = this.accountController.getAccounts(0, 2);
+        List<Account> accounts = accountResources.getContent().stream().collect(Collectors.toList());
+        assertNotNull(accounts);
+        assertEquals(2, accounts.size());
+        Account account = accounts.stream().findFirst().get();
         assertEquals(259359299, account.getAccountNumber().intValue());
         assertEquals(89993.65, account.getOpeningBalance());
     }

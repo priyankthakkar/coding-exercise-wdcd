@@ -47,7 +47,7 @@ public class TransactionController {
                             transactionPage.previousPageable().getPageSize())).withRel("previous"));
         }
 
-        if(transactionPage.getPageable() != null) {
+        if(transactionPage.getPageable() != null && transactionPage.getPageable().isPaged()) {
             resources.add(linkTo(methodOn(TransactionController.class)
                     .findAllTransactionsByAccountId(accountId,
                             transactionPage.getPageable().getPageNumber(),

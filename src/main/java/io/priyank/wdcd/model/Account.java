@@ -31,6 +31,10 @@ public class Account extends ResourceSupport {
     @Column(name = "opening_balance")
     private double openingBalance;
 
+    public Account() {
+
+    }
+
     public Account(Integer accountNumber,
                    AccountType accountType,
                    LocalDateTime balanceDate,

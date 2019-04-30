@@ -47,7 +47,7 @@ public class AccountController {
                     .withRel("previous"));
         }
 
-        if (accountsPage.getPageable() != null) {
+        if (accountsPage.getPageable() != null && accountsPage.getPageable().isPaged()) {
             resources.add(linkTo(methodOn(AccountController.class)
                     .getAccounts(accountsPage.getPageable().getPageNumber(), accountsPage.getPageable().getPageSize()))
                     .withSelfRel());

@@ -38,6 +38,10 @@ public class Transaction extends ResourceSupport {
     @Column(name = "transaction_narrative")
     private String transactionNarrative;
 
+    public Transaction() {
+
+    }
+
     public Transaction(Integer identifier,
                        Account account,
                        LocalDateTime valueDate,
